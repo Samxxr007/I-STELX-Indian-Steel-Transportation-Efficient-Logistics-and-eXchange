@@ -4,16 +4,24 @@ interface StatusBadgeProps {
   status: string;
   size?: 'sm' | 'md' | 'lg';
   className?: string;
+  showDot?: boolean;
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   status,
   size = 'sm',
-  className = ''
+  className = '',
+  showDot = true
 }) => {
   const norm = status?.toUpperCase() || 'UNKNOWN';
 
-  let badgeClass = 'badge-gray';
+  let badgeStyle = {
+    bg: 'bg-slate-50',
+    text: 'text-slate-700',
+    border: 'border-slate-200',
+    dot: 'bg-slate-500',
+    pulse: false
+  };
 
   if (
     norm.includes('ON TIME') || 
@@ -24,7 +32,13 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
     norm.includes('SUCCESS') ||
     norm.includes('OPERATIONAL')
   ) {
-    badgeClass = 'badge-green';
+    badgeStyle = {
+      bg: 'bg-emerald-50/90',
+      text: 'text-emerald-700',
+      border: 'border-emerald-200/80',
+      dot: 'bg-emerald-500',
+      pulse: false
+    };
   } else if (
     norm.includes('WARNING') || 
     norm.includes('MODERATE') || 
@@ -32,7 +46,13 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
     norm.includes('MEDIUM') ||
     norm.includes('POTENTIAL DELAY')
   ) {
-    badgeClass = 'badge-orange';
+    badgeStyle = {
+      bg: 'bg-amber-50/90',
+      text: 'text-amber-700',
+      border: 'border-amber-200/80',
+      dot: 'bg-amber-500',
+      pulse: true
+    };
   } else if (
     norm.includes('CRITICAL') || 
     norm.includes('DELAYED') || 
@@ -41,7 +61,13 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
     norm.includes('SEVERE') ||
     norm.includes('REJECTED')
   ) {
-    badgeClass = 'badge-red';
+    badgeStyle = {
+      bg: 'bg-rose-50/90',
+      text: 'text-rose-700',
+      border: 'border-rose-200/80',
+      dot: 'bg-rose-500',
+      pulse: true
+    };
   } else if (
     norm.includes('IN TRANSIT') || 
     norm.includes('ACTIVE') || 
@@ -51,19 +77,34 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({
     norm.includes('CHARTERED') ||
     norm.includes('ANALYZED')
   ) {
-    badgeClass = 'badge-blue';
+    badgeStyle = {
+      bg: 'bg-sky-50/90',
+      text: 'text-sky-700',
+      border: 'border-sky-200/80',
+      dot: 'bg-sky-500',
+      pulse: true
+    };
   }
 
   const sizeClasses = {
-    sm: 'text-[11px] px-2 py-0.5 font-medium rounded-full',
-    md: 'text-xs px-2.5 py-1 font-semibold rounded-md',
-    lg: 'text-sm px-3 py-1.5 font-bold rounded-md'
+    sm: 'text-[11px] px-2.5 py-0.5 font-semibold tracking-wide rounded-full border shadow-2xs',
+    md: 'text-xs px-3 py-1 font-semibold tracking-wide rounded-md border shadow-2xs',
+    lg: 'text-sm px-3.5 py-1.5 font-bold tracking-wide rounded-lg border shadow-xs'
   };
 
   return (
-    <span className={`inline-flex items-center gap-1.5 ${badgeClass} ${sizeClasses[size]} ${className}`}>
-      <span className="w-1.5 h-1.5 rounded-full bg-current opacity-80" />
-      <span>{status}</span>
+    <span
+      className={`inline-flex items-center gap-1.5 transition-colors select-none ${badgeStyle.bg} ${badgeStyle.text} ${badgeStyle.border} ${sizeClasses[size]} ${className}`}
+    >
+      {showDot && (
+        <span className="relative flex h-2 w-2 items-center justify-center">
+          {badgeStyle.pulse && (
+            <span className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 ${badgeStyle.dot}`} />
+          )}
+          <span className={`relative inline-flex h-1.5 w-1.5 rounded-full ${badgeStyle.dot}`} />
+        </span>
+      )}
+      <span className="truncate">{status}</span>
     </span>
   );
 };

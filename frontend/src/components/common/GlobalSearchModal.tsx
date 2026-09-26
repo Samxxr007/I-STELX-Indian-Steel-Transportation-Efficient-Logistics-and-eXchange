@@ -48,38 +48,46 @@ export const GlobalSearchModal: React.FC<GlobalSearchModalProps> = ({ isOpen, on
       api.getVessels(),
       api.getPorts()
     ]).then(([shipments, requirements, vessels, ports]) => {
+      const safeShipments = Array.isArray(shipments) ? shipments : [];
+      const safeReqs = Array.isArray(requirements) ? requirements : [];
+      const safeVessels = Array.isArray(vessels) ? vessels : [];
+      const safePorts = Array.isArray(ports) ? ports : [];
+
       if (!query.trim()) {
         setResults({
-          shipments: shipments.slice(0, 3),
-          requirements: requirements.slice(0, 3),
-          vessels: vessels.slice(0, 3),
-          ports: ports.slice(0, 3)
+          shipments: safeShipments.slice(0, 3),
+          requirements: safeReqs.slice(0, 3),
+          vessels: safeVessels.slice(0, 3),
+          ports: safePorts.slice(0, 3)
         });
       } else {
         const q = query.toLowerCase();
         setResults({
-          shipments: shipments.filter(s => 
-            s.shipment_code.toLowerCase().includes(q) || 
-            s.cargo_type.toLowerCase().includes(q) || 
-            s.destination_port.toLowerCase().includes(q)
+          shipments: safeShipments.filter(s => 
+            s.shipment_code?.toLowerCase().includes(q) || 
+            s.cargo_type?.toLowerCase().includes(q) || 
+            s.destination_port?.toLowerCase().includes(q)
           ),
-          requirements: requirements.filter(r => 
-            r.requirement_code.toLowerCase().includes(q) || 
-            r.cargo_type.toLowerCase().includes(q) || 
-            r.origin_port.toLowerCase().includes(q)
+          requirements: safeReqs.filter(r => 
+            r.requirement_code?.toLowerCase().includes(q) || 
+            r.cargo_type?.toLowerCase().includes(q) || 
+            r.origin_port?.toLowerCase().includes(q)
           ),
-          vessels: vessels.filter(v => 
-            v.name.toLowerCase().includes(q) || 
-            v.imo.toLowerCase().includes(q) || 
-            v.vessel_type.toLowerCase().includes(q)
+          vessels: safeVessels.filter(v => 
+            v.name?.toLowerCase().includes(q) || 
+            v.imo?.toLowerCase().includes(q) || 
+            v.vessel_type?.toLowerCase().includes(q)
           ),
-          ports: ports.filter(p => 
-            p.name.toLowerCase().includes(q) || 
-            p.code.toLowerCase().includes(q)
+          ports: safePorts.filter(p => 
+            p.name?.toLowerCase().includes(q) || 
+            p.code?.toLowerCase().includes(q)
           )
         });
       }
-    }).catch(console.error);
+    }).catch(err => {
+      console.error('Global search error:', err);
+      setResults({ shipments: [], requirements: [], vessels: [], ports: [] });
+    });
   }, [isOpen, query]);
 
   if (!isOpen) return null;

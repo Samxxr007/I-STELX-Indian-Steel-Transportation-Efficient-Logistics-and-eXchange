@@ -1,5 +1,22 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: 'Outfit', 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-brand-primary: #063B68;
+  --color-brand-secondary: #0867B2;
+  --color-brand-accent: #FF7A00;
+  --color-brand-success: #00843D;
+  --color-brand-danger: #D92D20;
+  --color-brand-warning: #F59E0B;
+  --color-brand-dark: #042442;
+  --color-brand-deep: #02172D;
+  --color-brand-light: #F5F8FC;
+  --color-brand-card: #FFFFFF;
+}
+
 @layer base {
   :root {
     --primary: #063B68;
@@ -13,25 +30,38 @@
     --warning: #F59E0B;
   }
 
+  * {
+    border-color: #E2E8F0;
+  }
+
   body {
     background-color: #F5F8FC;
     color: #102A43;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--font-sans);
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, .font-heading {
-    font-family: 'Outfit', 'Inter', sans-serif;
+    font-family: var(--font-heading);
+    letter-spacing: -0.02em;
   }
 
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
+  }
+
+  /* Universal numbers readability: prevent numerical jumping */
+  .tabular-nums, table, [data-tabular="true"] {
+    font-variant-numeric: tabular-nums;
   }
 }
 
-/* Custom Scrollbars */
+/* Custom High-Precision Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -41,40 +71,67 @@
 }
 ::-webkit-scrollbar-thumb {
   background: #CBD5E1;
-  border-radius: 4px;
+  border-radius: 9999px;
+  border: 1px solid transparent;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
+}
+
+/* Maritime Enterprise Cards & Surfaces */
+.istelx-card {
+  background: #FFFFFF;
+  border: 1px solid rgba(203, 213, 225, 0.7);
+  border-radius: 12px;
+  box-shadow: 0 1px 3px 0 rgba(6, 59, 104, 0.04), 0 1px 2px -1px rgba(6, 59, 104, 0.03);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.istelx-card-hover:hover {
+  border-color: #94A3B8;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px -4px rgba(6, 59, 104, 0.08), 0 4px 8px -2px rgba(6, 59, 104, 0.03);
+}
+
+/* Frosted Glass Panels */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(6, 59, 104, 0.06);
+}
+
+.glass-panel-dark {
+  background: rgba(4, 36, 66, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* Nautical Grid & Scan Lines */
+.maritime-grid {
+  background-image: radial-gradient(rgba(8, 103, 178, 0.12) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+.maritime-grid-dark {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1px, transparent 0);
+  background-size: 28px 28px;
 }
 
 /* Animations */
 @keyframes pulseGlow {
   0%, 100% {
     transform: scale(1);
-    opacity: 0.8;
+    opacity: 0.85;
   }
   50% {
-    transform: scale(1.18);
+    transform: scale(1.15);
     opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(255, 122, 0, 0.7));
-  }
-}
-
-@keyframes waveMotion {
-  0% {
-    transform: translateX(0) translateZ(0) scaleY(1);
-  }
-  50% {
-    transform: translateX(-25%) translateZ(0) scaleY(1.08);
-  }
-  100% {
-    transform: translateX(-50%) translateZ(0) scaleY(1);
-  }
-}
-
-@keyframes dashFlow {
-  to {
-    stroke-dashoffset: -100;
+    filter: drop-shadow(0 0 10px rgba(255, 122, 0, 0.8));
   }
 }
 
@@ -87,17 +144,17 @@
   }
 }
 
+@keyframes floatGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
 .animate-pulse-glow {
   animation: pulseGlow 2.4s infinite ease-in-out;
-}
-
-.animate-wave {
-  animation: waveMotion 8s linear infinite;
-}
-
-.animate-dash {
-  stroke-dasharray: 6, 6;
-  animation: dashFlow 3s linear infinite;
 }
 
 .animate-radar {
@@ -105,54 +162,57 @@
   transform-origin: center;
 }
 
-/* Maritime Enterprise Card */
-.istelx-card {
-  background: #FFFFFF;
-  border: 1px solid #E2E8F0;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px 0 rgba(16, 42, 67, 0.05), 0 1px 2px -1px rgba(16, 42, 67, 0.05);
-  transition: all 0.2s ease-in-out;
+.animate-float {
+  animation: floatGentle 4s ease-in-out infinite;
 }
 
-.istelx-card-hover:hover {
-  border-color: #CBD5E1;
-  box-shadow: 0 10px 25px -5px rgba(6, 59, 104, 0.08), 0 8px 10px -6px rgba(6, 59, 104, 0.04);
-}
-
-/* Status Chips */
+/* Status Chips & Badges */
 .badge-green {
-  background-color: #E6F4EA;
-  color: #00843D;
-  border: 1px solid #C4E7D0;
+  background-color: #ECFDF3;
+  color: #027A48;
+  border: 1px solid #A6F4C5;
 }
 
 .badge-orange {
-  background-color: #FFF4E5;
-  color: #D96500;
-  border: 1px solid #FFE0B2;
+  background-color: #FFFAEB;
+  color: #B54708;
+  border: 1px solid #FEDF89;
 }
 
 .badge-red {
-  background-color: #FEECEB;
-  color: #D92D20;
-  border: 1px solid #FCCECE;
+  background-color: #FEF3F2;
+  color: #B42318;
+  border: 1px solid #FECDCA;
 }
 
 .badge-blue {
-  background-color: #EBF4FC;
-  color: #0867B2;
-  border: 1px solid #CFE2F9;
+  background-color: #EFF8FF;
+  color: #175CD3;
+  border: 1px solid #B2DDFF;
 }
 
 .badge-gray {
-  background-color: #F1F5F9;
-  color: #475569;
+  background-color: #F8FAFC;
+  color: #344054;
   border: 1px solid #E2E8F0;
 }
 
 /* Leaflet Map overrides */
 .leaflet-container {
-  font-family: 'Inter', sans-serif !important;
+  font-family: var(--font-sans) !important;
   background: #E5EEF8 !important;
   z-index: 10;
+  border-radius: 12px;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 10px !important;
+  box-shadow: 0 10px 25px -5px rgba(6, 59, 104, 0.2) !important;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
 }

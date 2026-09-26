@@ -30,9 +30,9 @@ import {
   Shield,
   Menu,
   X,
-  RefreshCw,
-  Compass,
-  Zap
+  Zap,
+  ChevronRight,
+  Wifi
 } from 'lucide-react';
 
 export const AppLayout: React.FC = () => {
@@ -44,13 +44,18 @@ export const AppLayout: React.FC = () => {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [roleModalOpen, setRoleModalOpen] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState('');
+  const [currentTimeUtc, setCurrentTimeUtc] = useState('');
+  const [currentTimeIst, setCurrentTimeIst] = useState('');
+  const [showIst, setShowIst] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setCurrentTime(
-        now.toUTCString().replace('GMT', 'UTC')
+      setCurrentTimeUtc(
+        now.toISOString().substring(11, 19) + ' UTC'
+      );
+      setCurrentTimeIst(
+        now.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour12: false }) + ' IST'
       );
     };
     updateTime();
@@ -66,44 +71,44 @@ export const AppLayout: React.FC = () => {
       ]
     },
     {
-      label: 'PLANNING',
+      label: 'PLANNING & CHARTERING',
       items: [
-        { name: 'New Requirement', path: '/requirements/new', icon: PlusCircle },
+        { name: 'New Cargo Demand', path: '/requirements/new', icon: PlusCircle, badge: 'New' },
         { name: 'Freight Intelligence', path: '/freight', icon: TrendingUp },
         { name: 'Vessel Optimizer', path: '/vessels', icon: Ship },
-        { name: 'Port Intelligence', path: '/ports', icon: Anchor },
-        { name: 'Cost Intelligence', path: '/cost', icon: DollarSign }
+        { name: 'Port Compatibility', path: '/ports', icon: Anchor },
+        { name: 'Landed Cost Model', path: '/cost', icon: DollarSign }
       ]
     },
     {
-      label: 'OPERATIONS',
+      label: 'FLEET OPERATIONS',
       items: [
-        { name: 'Live Tracking', path: '/tracking', icon: Radio },
+        { name: 'Live Maritime Tower', path: '/tracking', icon: Radio, pulse: true },
         { name: '3D Cargo Twin', path: '/digital-twin', icon: Box },
-        { name: 'Shipments', path: '/shipments', icon: Package },
-        { name: 'Risk & Alerts', path: '/alerts', icon: AlertTriangle }
+        { name: 'Voyage Shipments', path: '/shipments', icon: Package },
+        { name: 'Risk & Port Alerts', path: '/alerts', icon: AlertTriangle, alertCount: 3 }
       ]
     },
     {
-      label: 'INTELLIGENCE',
+      label: 'AI & DECISION SUITE',
       items: [
-        { name: 'Charter Advisor', path: '/charter-advisor', icon: Brain },
+        { name: 'Charter Advisor', path: '/charter-advisor', icon: Brain, badge: 'AI' },
         { name: 'What-If Simulator', path: '/simulator', icon: SlidersHorizontal },
-        { name: 'ETA Intelligence', path: '/eta', icon: Clock }
+        { name: 'ETA Predictor', path: '/eta', icon: Clock }
       ]
     },
     {
-      label: 'ANALYTICS',
+      label: 'INTELLIGENCE & AUDIT',
       items: [
-        { name: 'Analytics', path: '/analytics', icon: BarChart3 },
-        { name: 'Reports', path: '/reports', icon: FileSpreadsheet }
+        { name: 'Executive Analytics', path: '/analytics', icon: BarChart3 },
+        { name: 'Discharge Reports', path: '/reports', icon: FileSpreadsheet }
       ]
     },
     {
-      label: 'ADMINISTRATION',
+      label: 'GOVERNANCE',
       items: [
         { name: 'Users & Roles', path: '/admin/users', icon: Users },
-        { name: 'Master Data', path: '/admin/master-data', icon: Database },
+        { name: 'Master Data Hub', path: '/admin/master-data', icon: Database },
         { name: 'System Settings', path: '/admin/settings', icon: Settings }
       ]
     }
@@ -116,46 +121,80 @@ export const AppLayout: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-[#F5F8FC] overflow-hidden">
-      {/* LEFT SIDEBAR (Desktop) */}
-      <aside className="hidden lg:flex flex-col w-64 bg-[#063B68] text-white flex-shrink-0 z-30 shadow-xl border-r border-[#0867B2]/40">
+      {/* DESKTOP SIDEBAR */}
+      <aside className="hidden lg:flex flex-col w-64 bg-gradient-to-b from-[#031D36] via-[#063B68] to-[#042442] text-white flex-shrink-0 z-30 shadow-2xl border-r border-white/10 select-none">
         {/* Brand Header */}
-        <div className="h-16 px-4 flex items-center justify-between border-b border-[#0867B2]/40 bg-[#042848]">
-          <NavLink to="/dashboard" className="flex items-center gap-2.5">
-            <Logo size="sm" showText={false} />
+        <div className="h-16 px-4 flex items-center justify-between border-b border-white/10 bg-[#02172D]/60 backdrop-blur-md">
+          <NavLink to="/dashboard" className="flex items-center gap-2.5 group">
+            <div className="p-1 rounded-lg bg-white/5 border border-white/10 group-hover:border-[#FF7A00]/50 transition-colors">
+              <Logo size="sm" showText={false} />
+            </div>
             <div className="flex flex-col">
-              <span className="font-heading font-extrabold text-base tracking-wider text-white">
-                I-STELX
-              </span>
-              <span className="text-[8px] uppercase tracking-widest text-[#FF7A00] font-bold">
-                Predict • Optimize • Track
+              <div className="flex items-center gap-1.5">
+                <span className="font-heading font-extrabold text-base tracking-wider text-white">
+                  I-STELX
+                </span>
+                <span className="px-1.5 py-0.2 bg-[#FF7A00]/20 border border-[#FF7A00]/40 text-[#FF7A00] text-[9px] font-mono font-bold rounded">
+                  v2.4
+                </span>
+              </div>
+              <span className="text-[8px] uppercase tracking-widest text-sky-300 font-bold">
+                Maritime Control Tower
               </span>
             </div>
           </NavLink>
         </div>
 
-        {/* Navigation Items List */}
+        {/* Navigation Items */}
         <div className="flex-1 overflow-y-auto px-3 py-4 space-y-5">
           {navGroups.map((group, idx) => (
             <div key={idx} className="space-y-1">
-              <span className="px-2.5 text-[10px] font-extrabold tracking-widest uppercase text-[#94A3B8]/70">
-                {group.label}
-              </span>
+              <div className="px-2.5 text-[9px] font-extrabold tracking-widest uppercase text-slate-400/80 flex items-center justify-between">
+                <span>{group.label}</span>
+              </div>
               <div className="mt-1 space-y-0.5">
-                {group.items.map((item) => {
+                {group.items.map((item: any) => {
                   const Icon = item.icon;
-                  const isActive = location.pathname === item.path || (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
+                  const isActive =
+                    location.pathname === item.path ||
+                    (item.path !== '/dashboard' && location.pathname.startsWith(item.path));
                   return (
                     <NavLink
                       key={item.path}
                       to={item.path}
-                      className={`flex items-center gap-3 px-3 py-2 rounded-lg text-xs font-semibold transition-colors ${
+                      className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-150 ${
                         isActive
-                          ? 'bg-[#0867B2] text-white shadow-xs font-bold'
-                          : 'text-[#E2E8F0] hover:bg-[#0867B2]/40 hover:text-white'
+                          ? 'bg-gradient-to-r from-[#0867B2] to-[#0A7CD4] text-white shadow-md shadow-[#0867B2]/30 font-bold translate-x-0.5'
+                          : 'text-slate-200 hover:bg-white/8 hover:text-white'
                       }`}
                     >
-                      <Icon className={`w-4 h-4 ${isActive ? 'text-[#FF7A00]' : 'text-[#94A3B8]'}`} />
-                      <span>{item.name}</span>
+                      <div className="flex items-center gap-2.5 truncate">
+                        <Icon
+                          className={`w-4 h-4 flex-shrink-0 transition-colors ${
+                            isActive ? 'text-[#FF7A00]' : 'text-slate-400'
+                          }`}
+                        />
+                        <span className="truncate">{item.name}</span>
+                      </div>
+
+                      <div className="flex items-center gap-1 flex-shrink-0 ml-1">
+                        {item.pulse && (
+                          <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                          </span>
+                        )}
+                        {item.badge && (
+                          <span className="px-1.5 py-0.2 bg-[#FF7A00]/25 text-[#FF7A00] text-[9px] font-bold rounded border border-[#FF7A00]/40">
+                            {item.badge}
+                          </span>
+                        )}
+                        {item.alertCount && (
+                          <span className="px-1.5 py-0.2 bg-rose-500/25 text-rose-300 text-[9px] font-bold rounded border border-rose-500/40">
+                            {item.alertCount}
+                          </span>
+                        )}
+                      </div>
                     </NavLink>
                   );
                 })}
@@ -165,40 +204,43 @@ export const AppLayout: React.FC = () => {
         </div>
 
         {/* User Card & Role Switcher */}
-        <div className="p-3 bg-[#042848] border-t border-[#0867B2]/40 flex flex-col gap-2">
+        <div className="p-3 bg-[#02172D]/70 border-t border-white/10 flex flex-col gap-2">
           <div
             onClick={() => setRoleModalOpen(true)}
-            className="flex items-center justify-between p-2 rounded-lg bg-[#063B68] hover:bg-[#0867B2]/60 cursor-pointer transition-colors border border-[#0867B2]/40 group"
-            title="Click to change RBAC demo role"
+            className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 hover:bg-white/10 cursor-pointer transition-all border border-white/10 group"
+            title="Click to test role permissions"
           >
-            <div className="flex items-center gap-2 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-[#FF7A00] flex items-center justify-center font-bold text-white text-xs flex-shrink-0">
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#FF7A00] to-amber-500 flex items-center justify-center font-extrabold text-white text-xs flex-shrink-0 shadow-xs">
                 {user?.full_name?.charAt(0) || 'U'}
               </div>
               <div className="flex flex-col truncate">
-                <span className="text-xs font-bold text-white truncate">{user?.full_name || 'User'}</span>
+                <span className="text-xs font-bold text-white truncate leading-tight">
+                  {user?.full_name || 'User'}
+                </span>
                 <span className="text-[10px] text-[#FF7A00] font-semibold flex items-center gap-1">
                   <Shield className="w-2.5 h-2.5" />
                   {user?.role || 'Viewer'}
                 </span>
               </div>
             </div>
-            <Zap className="w-3.5 h-3.5 text-[#94A3B8] group-hover:text-[#FF7A00] transition-colors" />
+            <Zap className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#FF7A00] transition-colors" />
           </div>
 
           <div className="flex items-center justify-between px-1">
             <button
               onClick={() => setRoleModalOpen(true)}
-              className="text-[11px] text-[#94A3B8] hover:text-white font-medium cursor-pointer"
+              className="text-[11px] text-slate-400 hover:text-white font-medium flex items-center gap-1 transition-colors cursor-pointer"
             >
-              Switch Role
+              <span>Demo Role</span>
+              <ChevronRight className="w-3 h-3" />
             </button>
             <button
               onClick={handleLogout}
-              className="text-[11px] text-[#D92D20] hover:text-red-400 font-medium flex items-center gap-1 cursor-pointer"
+              className="text-[11px] text-rose-300 hover:text-rose-200 font-medium flex items-center gap-1 transition-colors cursor-pointer"
             >
               <LogOut className="w-3 h-3" />
-              <span>Logout</span>
+              <span>Sign Out</span>
             </button>
           </div>
         </div>
@@ -206,13 +248,13 @@ export const AppLayout: React.FC = () => {
 
       {/* MOBILE SIDEBAR DRAWER */}
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 flex lg:hidden bg-black/60 backdrop-blur-xs">
-          <div className="w-72 bg-[#063B68] text-white flex flex-col h-full shadow-2xl">
-            <div className="p-4 flex items-center justify-between border-b border-[#0867B2]">
+        <div className="fixed inset-0 z-50 flex lg:hidden bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-72 bg-gradient-to-b from-[#031D36] via-[#063B68] to-[#042442] text-white flex flex-col h-full shadow-2xl border-r border-white/10">
+            <div className="p-4 flex items-center justify-between border-b border-white/10 bg-[#02172D]/70">
               <Logo size="sm" />
               <button
                 onClick={() => setMobileSidebarOpen(false)}
-                className="p-1 rounded text-white hover:bg-[#0867B2]"
+                className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -220,17 +262,24 @@ export const AppLayout: React.FC = () => {
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {navGroups.map((group, idx) => (
                 <div key={idx} className="space-y-1">
-                  <span className="text-[10px] font-bold text-[#94A3B8] uppercase">{group.label}</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    {group.label}
+                  </span>
                   <div className="space-y-1 mt-1">
-                    {group.items.map((item) => (
+                    {group.items.map((item: any) => (
                       <NavLink
                         key={item.path}
                         to={item.path}
                         onClick={() => setMobileSidebarOpen(false)}
-                        className="flex items-center gap-3 px-3 py-2 rounded-md text-xs font-semibold text-white hover:bg-[#0867B2]"
+                        className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-white hover:bg-white/10"
                       >
-                        <item.icon className="w-4 h-4 text-[#FF7A00]" />
-                        <span>{item.name}</span>
+                        <div className="flex items-center gap-3">
+                          <item.icon className="w-4 h-4 text-[#FF7A00]" />
+                          <span>{item.name}</span>
+                        </div>
+                        {item.pulse && (
+                          <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                        )}
                       </NavLink>
                     ))}
                   </div>
@@ -243,52 +292,62 @@ export const AppLayout: React.FC = () => {
 
       {/* MAIN CONTENT WRAPPER */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* TOP BAR */}
-        <header className="h-16 bg-white border-b border-[#CBD5E1] px-4 lg:px-6 flex items-center justify-between z-20 shadow-2xs">
+        {/* TOP COMMAND BAR */}
+        <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-6 flex items-center justify-between z-20 shadow-2xs">
           {/* Left: Mobile Menu & Search */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg text-[#063B68] hover:bg-[#F1F5F9] cursor-pointer"
+              className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
             >
               <Menu className="w-5 h-5" />
             </button>
 
-            {/* Global Search Button */}
+            {/* Quick Command Palette Launcher */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-[#F1F5F9] hover:bg-[#E2E8F0] border border-[#CBD5E1] text-xs text-[#64748B] font-medium transition-colors cursor-pointer w-48 sm:w-64"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-slate-200/70 border border-slate-200 text-xs text-slate-600 font-medium transition-all cursor-pointer w-48 sm:w-72 shadow-2xs group"
             >
-              <Search className="w-4 h-4 text-[#0867B2]" />
-              <span className="truncate">Search Shipments, Vessels...</span>
-              <kbd className="hidden sm:inline-block px-1.5 py-0.5 bg-white border border-[#CBD5E1] rounded text-[10px] font-mono text-[#64748B] ml-auto">
+              <Search className="w-4 h-4 text-[#0867B2] group-hover:scale-110 transition-transform" />
+              <span className="truncate">Search Shipments, Vessels, Ports...</span>
+              <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono text-slate-500 ml-auto shadow-2xs">
                 ⌘K
               </kbd>
             </button>
           </div>
 
-          {/* Right: Operational Status, Live Clock, Notifications, Role Tag */}
-          <div className="flex items-center gap-3 sm:gap-4">
-            {/* Live AIS Status Chip */}
-            <div className="hidden md:flex items-center gap-2 px-3 py-1 rounded-full bg-[#E6F4EA] border border-[#C4E7D0] text-[#00843D] text-xs font-bold">
-              <span className="w-2 h-2 rounded-full bg-[#00843D] animate-ping" />
-              <span>AIS Control Stream Live</span>
+          {/* Right: Telemetry Stream, Clock, Alerts, User Profile */}
+          <div className="flex items-center gap-2.5 sm:gap-4">
+            {/* Live AIS Stream Indicator */}
+            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-2xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+              <span className="tracking-tight">AIS Telemetry Active</span>
             </div>
 
-            {/* UTC Clock */}
-            <div className="hidden xl:flex items-center gap-1.5 text-xs font-mono text-[#475569] bg-[#F8FAFC] px-2.5 py-1 rounded border border-[#E2E8F0]">
+            {/* High-Precision Clock (UTC / IST toggle) */}
+            <div
+              onClick={() => setShowIst(!showIst)}
+              className="hidden xl:flex items-center gap-1.5 text-xs font-mono text-slate-700 bg-slate-50 hover:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 cursor-pointer select-none transition-colors shadow-2xs"
+              title="Click to toggle between UTC and IST"
+            >
               <Clock className="w-3.5 h-3.5 text-[#0867B2]" />
-              <span>{currentTime || 'Synchronizing UTC...'}</span>
+              <span className="tabular-nums font-semibold">
+                {showIst ? currentTimeIst : currentTimeUtc}
+              </span>
             </div>
 
-            {/* Notification Bell */}
+            {/* Notifications Bell */}
             <div className="relative">
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="relative p-2 rounded-lg text-[#063B68] hover:bg-[#F1F5F9] transition-colors cursor-pointer"
+                className="relative p-2 rounded-lg text-slate-700 hover:text-[#063B68] hover:bg-slate-100 transition-colors cursor-pointer"
+                title="Notifications & Alerts"
               >
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#D92D20] border-2 border-white" />
+                <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-rose-500 ring-2 ring-white animate-pulse" />
               </button>
               <NotificationDropdown
                 isOpen={notificationsOpen}
@@ -299,13 +358,13 @@ export const AppLayout: React.FC = () => {
             {/* User Profile Pill */}
             <div
               onClick={() => setRoleModalOpen(true)}
-              className="flex items-center gap-2 pl-2 border-l border-[#E2E8F0] cursor-pointer"
+              className="flex items-center gap-2.5 pl-2.5 py-1 pr-1.5 rounded-xl hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-all cursor-pointer select-none"
             >
-              <div className="w-8 h-8 rounded-full bg-[#063B68] text-white flex items-center justify-center font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#063B68] to-[#0867B2] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 {user?.full_name?.charAt(0) || 'U'}
               </div>
               <div className="hidden sm:flex flex-col text-left">
-                <span className="text-xs font-bold text-[#102A43] leading-tight">
+                <span className="text-xs font-bold text-slate-900 leading-tight">
                   {user?.full_name?.split(' ')[0]}
                 </span>
                 <span className="text-[10px] font-semibold text-[#0867B2]">
@@ -316,9 +375,11 @@ export const AppLayout: React.FC = () => {
           </div>
         </header>
 
-        {/* BODY OUTLET */}
+        {/* MAIN BODY OUTLET */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F5F8FC]">
-          <Outlet />
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
         </main>
       </div>
 

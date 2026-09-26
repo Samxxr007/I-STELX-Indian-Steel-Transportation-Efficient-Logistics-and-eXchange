@@ -17,7 +17,7 @@ def get_eta_intelligence(shipment_id: int, db: Session = Depends(get_db)):
     variance_hours = s.eta_variance_hours
     variance_text = f"+{int(variance_hours)}h {int((variance_hours % 1) * 60)}m" if variance_hours > 0 else "On Time"
 
-    status_tag = "Potential Delay" if variance_hours > 6.0 else ("Critical Delay" if variance_hours > 24.0 else "On Time")
+    status_tag = "Critical Delay" if variance_hours > 24.0 else ("Potential Delay" if variance_hours > 6.0 else "On Time")
 
     # Historical ETA variation milestones throughout voyage
     eta_history = [
