@@ -13,6 +13,7 @@ import {
   Anchor,
   DollarSign,
   Radio,
+  Box,
   Package,
   AlertTriangle,
   Brain,
@@ -78,6 +79,7 @@ export const AppLayout: React.FC = () => {
       label: 'OPERATIONS',
       items: [
         { name: 'Live Tracking', path: '/tracking', icon: Radio },
+        { name: '3D Cargo Twin', path: '/digital-twin', icon: Box },
         { name: 'Shipments', path: '/shipments', icon: Package },
         { name: 'Risk & Alerts', path: '/alerts', icon: AlertTriangle }
       ]

@@ -19,6 +19,7 @@ import { VesselOptimizerPage } from './pages/vessels/VesselOptimizerPage';
 import { PortIntelligencePage } from './pages/ports/PortIntelligencePage';
 import { CostIntelligencePage } from './pages/cost/CostIntelligencePage';
 import { AICharterAdvisorPage } from './pages/charter/AICharterAdvisorPage';
+import { DigitalTwinPage } from './pages/digitalTwin/DigitalTwinPage';
 import { ShipmentsListPage } from './pages/shipments/ShipmentsListPage';
 import { ShipmentDetailPage } from './pages/shipments/ShipmentDetailPage';
 import { LiveTrackingPage } from './pages/tracking/LiveTrackingPage';
@@ -95,6 +96,8 @@ export function App() {
 
             {/* Operations */}
             <Route path="/tracking" element={<LiveTrackingPage />} />
+            <Route path="/digital-twin" element={<DigitalTwinPage />} />
+            <Route path="/shipments/:id/digital-twin" element={<DigitalTwinPage />} />
             <Route path="/shipments" element={<ShipmentsListPage />} />
             <Route path="/shipments/:id" element={<ShipmentDetailPage />} />
             <Route path="/alerts" element={<RiskAlertCenterPage />} />

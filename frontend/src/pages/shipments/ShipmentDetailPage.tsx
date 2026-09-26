@@ -20,7 +20,8 @@ import {
   Check,
   Download,
   ShieldCheck,
-  Activity
+  Activity,
+  Box
 } from 'lucide-react';
 
 export const ShipmentDetailPage: React.FC = () => {
@@ -113,6 +114,14 @@ export const ShipmentDetailPage: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            onClick={() => navigate(`/shipments/${shipment.id}/digital-twin`)}
+            className="px-3.5 py-2 bg-[#063B68] hover:bg-[#0867B2] text-white font-bold text-xs rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+          >
+            <Box className="w-3.5 h-3.5 text-[#FF7A00]" />
+            <span>3D Cargo Twin</span>
+          </button>
+
           {shipment.status !== 'COMPLETED' && (
             <button
               onClick={handleCompleteShipment}
