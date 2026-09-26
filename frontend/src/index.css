@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #063B68;
+    --secondary: #0867B2;
+    --accent: #FF7A00;
+    --success: #00843D;
+    --bg-page: #F5F8FC;
+    --card-bg: #FFFFFF;
+    --text-main: #102A43;
+    --danger: #D92D20;
+    --warning: #F59E0B;
+  }
+
+  body {
+    background-color: #F5F8FC;
+    color: #102A43;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', 'Inter', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #EBF1F8;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94A3B8;
+}
+
+/* Animations */
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.18);
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 122, 0, 0.7));
+  }
+}
+
+@keyframes waveMotion {
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(1.08);
+  }
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes radarSweep {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.4s infinite ease-in-out;
+}
+
+.animate-wave {
+  animation: waveMotion 8s linear infinite;
+}
+
+.animate-dash {
+  stroke-dasharray: 6, 6;
+  animation: dashFlow 3s linear infinite;
+}
+
+.animate-radar {
+  animation: radarSweep 4s linear infinite;
+  transform-origin: center;
+}
+
+/* Maritime Enterprise Card */
+.istelx-card {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px 0 rgba(16, 42, 67, 0.05), 0 1px 2px -1px rgba(16, 42, 67, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+
+.istelx-card-hover:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 10px 25px -5px rgba(6, 59, 104, 0.08), 0 8px 10px -6px rgba(6, 59, 104, 0.04);
+}
+
+/* Status Chips */
+.badge-green {
+  background-color: #E6F4EA;
+  color: #00843D;
+  border: 1px solid #C4E7D0;
+}
+
+.badge-orange {
+  background-color: #FFF4E5;
+  color: #D96500;
+  border: 1px solid #FFE0B2;
+}
+
+.badge-red {
+  background-color: #FEECEB;
+  color: #D92D20;
+  border: 1px solid #FCCECE;
+}
+
+.badge-blue {
+  background-color: #EBF4FC;
+  color: #0867B2;
+  border: 1px solid #CFE2F9;
+}
+
+.badge-gray {
+  background-color: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+/* Leaflet Map overrides */
+.leaflet-container {
+  font-family: 'Inter', sans-serif !important;
+  background: #E5EEF8 !important;
+  z-index: 10;
+}
