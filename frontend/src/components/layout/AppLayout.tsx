@@ -119,6 +119,8 @@ export const AppLayout: React.FC = () => {
     navigate('/login');
   };
 
+  const isDigitalTwin = location.pathname.startsWith('/digital-twin');
+
   return (
     <div className="flex h-screen bg-[#F5F8FC] overflow-hidden">
       {/* DESKTOP SIDEBAR */}
@@ -291,14 +293,22 @@ export const AppLayout: React.FC = () => {
       )}
 
       {/* MAIN CONTENT WRAPPER */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden relative">
         {/* TOP COMMAND BAR */}
-        <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 lg:px-6 flex items-center justify-between z-20 shadow-2xs">
+        <header
+          className={`h-16 px-4 lg:px-6 flex items-center justify-between z-20 transition-colors ${
+            isDigitalTwin
+              ? 'bg-[#031D36]/80 backdrop-blur-md border-b border-white/10 text-white'
+              : 'bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-2xs text-slate-900'
+          }`}
+        >
           {/* Left: Mobile Menu & Search */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setMobileSidebarOpen(true)}
-              className="lg:hidden p-2 rounded-lg text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer"
+              className={`lg:hidden p-2 rounded-lg transition-colors cursor-pointer ${
+                isDigitalTwin ? 'text-white hover:bg-white/10' : 'text-slate-700 hover:bg-slate-100'
+              }`}
             >
               <Menu className="w-5 h-5" />
             </button>
@@ -306,11 +316,19 @@ export const AppLayout: React.FC = () => {
             {/* Quick Command Palette Launcher */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-slate-100/80 hover:bg-slate-200/70 border border-slate-200 text-xs text-slate-600 font-medium transition-all cursor-pointer w-48 sm:w-72 shadow-2xs group"
+              className={`flex items-center gap-2.5 px-3 py-1.5 rounded-xl border text-xs font-medium transition-all cursor-pointer w-48 sm:w-72 shadow-2xs group ${
+                isDigitalTwin
+                  ? 'bg-white/10 hover:bg-white/15 border-white/20 text-[#A0C4E2]'
+                  : 'bg-slate-100/80 hover:bg-slate-200/70 border-slate-200 text-slate-600'
+              }`}
             >
-              <Search className="w-4 h-4 text-[#0867B2] group-hover:scale-110 transition-transform" />
+              <Search className="w-4 h-4 text-[#38BDF8] group-hover:scale-110 transition-transform" />
               <span className="truncate">Search Shipments, Vessels, Ports...</span>
-              <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 bg-white border border-slate-300 rounded text-[10px] font-mono text-slate-500 ml-auto shadow-2xs">
+              <kbd
+                className={`hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-[10px] font-mono ml-auto shadow-2xs ${
+                  isDigitalTwin ? 'bg-white/10 border border-white/20 text-white' : 'bg-white border border-slate-300 text-slate-500'
+                }`}
+              >
                 ⌘K
               </kbd>
             </button>
@@ -319,7 +337,13 @@ export const AppLayout: React.FC = () => {
           {/* Right: Telemetry Stream, Clock, Alerts, User Profile */}
           <div className="flex items-center gap-2.5 sm:gap-4">
             {/* Live AIS Stream Indicator */}
-            <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-semibold shadow-2xs">
+            <div
+              className={`hidden md:flex items-center gap-2 px-2.5 py-1 rounded-full text-xs font-semibold shadow-2xs border ${
+                isDigitalTwin
+                  ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+                  : 'bg-emerald-50 border-emerald-200 text-emerald-700'
+              }`}
+            >
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -330,10 +354,14 @@ export const AppLayout: React.FC = () => {
             {/* High-Precision Clock (UTC / IST toggle) */}
             <div
               onClick={() => setShowIst(!showIst)}
-              className="hidden xl:flex items-center gap-1.5 text-xs font-mono text-slate-700 bg-slate-50 hover:bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 cursor-pointer select-none transition-colors shadow-2xs"
+              className={`hidden xl:flex items-center gap-1.5 text-xs font-mono px-2.5 py-1 rounded-xl border cursor-pointer select-none transition-colors shadow-2xs ${
+                isDigitalTwin
+                  ? 'bg-white/10 hover:bg-white/15 border-white/20 text-white'
+                  : 'bg-slate-50 hover:bg-slate-100 border-slate-200 text-slate-700'
+              }`}
               title="Click to toggle between UTC and IST"
             >
-              <Clock className="w-3.5 h-3.5 text-[#0867B2]" />
+              <Clock className="w-3.5 h-3.5 text-[#38BDF8]" />
               <span className="tabular-nums font-semibold">
                 {showIst ? currentTimeIst : currentTimeUtc}
               </span>
@@ -343,7 +371,9 @@ export const AppLayout: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setNotificationsOpen(!notificationsOpen)}
-                className="relative p-2 rounded-lg text-slate-700 hover:text-[#063B68] hover:bg-slate-100 transition-colors cursor-pointer"
+                className={`relative p-2 rounded-xl transition-colors cursor-pointer ${
+                  isDigitalTwin ? 'text-white hover:bg-white/10' : 'text-slate-700 hover:text-[#063B68] hover:bg-slate-100'
+                }`}
                 title="Notifications & Alerts"
               >
                 <Bell className="w-5 h-5" />
@@ -358,16 +388,20 @@ export const AppLayout: React.FC = () => {
             {/* User Profile Pill */}
             <div
               onClick={() => setRoleModalOpen(true)}
-              className="flex items-center gap-2.5 pl-2.5 py-1 pr-1.5 rounded-xl hover:bg-slate-100 border border-transparent hover:border-slate-200 transition-all cursor-pointer select-none"
+              className={`flex items-center gap-2.5 pl-2.5 py-1 pr-1.5 rounded-xl border transition-all cursor-pointer select-none ${
+                isDigitalTwin
+                  ? 'hover:bg-white/10 border-white/10'
+                  : 'hover:bg-slate-100 border-transparent hover:border-slate-200'
+              }`}
             >
               <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#063B68] to-[#0867B2] text-white flex items-center justify-center font-bold text-xs shadow-xs">
                 {user?.full_name?.charAt(0) || 'U'}
               </div>
               <div className="hidden sm:flex flex-col text-left">
-                <span className="text-xs font-bold text-slate-900 leading-tight">
+                <span className={`text-xs font-bold leading-tight ${isDigitalTwin ? 'text-white' : 'text-slate-900'}`}>
                   {user?.full_name?.split(' ')[0]}
                 </span>
-                <span className="text-[10px] font-semibold text-[#0867B2]">
+                <span className="text-[10px] font-semibold text-[#38BDF8]">
                   {user?.role}
                 </span>
               </div>
@@ -376,8 +410,14 @@ export const AppLayout: React.FC = () => {
         </header>
 
         {/* MAIN BODY OUTLET */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F5F8FC]">
-          <div className="max-w-7xl mx-auto">
+        <main
+          className={`${
+            isDigitalTwin
+              ? 'flex-1 relative overflow-y-auto overflow-x-hidden bg-[#021024]'
+              : 'flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F5F8FC]'
+          }`}
+        >
+          <div className={isDigitalTwin ? 'relative min-h-full' : 'max-w-7xl mx-auto'}>
             <Outlet />
           </div>
         </main>

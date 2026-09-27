@@ -1,7 +1,7 @@
 import React from 'react';
 import { DigitalTwinBatch, DigitalTwinHold } from '../../types/digitalTwin';
 import { StatusBadge } from '../common/StatusBadge';
-import { FileText, QrCode, Tag, ArrowRight } from 'lucide-react';
+import { FileText, Tag, ArrowRight } from 'lucide-react';
 
 interface CargoManifestProps {
   batches: DigitalTwinBatch[];
@@ -16,7 +16,6 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
   selectedHoldNumber,
   onSelectHoldNumber
 }) => {
-  // Synthesize flat manifest rows matching the required columns
   const rows = holds.map((hold) => {
     const parentBatch = batches.find((b) => b.batch_id === hold.batch_id);
     return {
@@ -35,23 +34,23 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
   });
 
   return (
-    <div className="istelx-card bg-white p-5 border border-[#CBD5E1] shadow-md">
-      <div className="flex items-center justify-between border-b border-[#E2E8F0] pb-3 mb-4">
-        <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-[#EBF4FC] text-[#0867B2]">
+    <div className="bg-[#063B68]/40 backdrop-blur-md border border-white/20 shadow-xl rounded-xl p-4 sm:p-5 text-white">
+      <div className="flex items-center justify-between border-b border-white/15 pb-3 mb-4">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-white/10 border border-white/20 text-[#38BDF8]">
             <FileText className="w-4 h-4" />
           </div>
           <div>
-            <h3 className="font-heading font-extrabold text-base text-[#063B68]">
+            <h3 className="font-heading font-extrabold text-base text-[#FFFFFF]">
               Cargo Manifest & Commercial Batches
             </h3>
-            <p className="text-xs text-[#64748B]">
-              Bill of Lading manifest breakdown with batch verification & hold allocation (click row to select 3D hold)
+            <p className="text-xs text-[#A0C4E2]">
+              Bill of Lading manifest breakdown with batch verification & hold allocation (click row to focus 3D hold)
             </p>
           </div>
         </div>
 
-        <span className="text-xs font-mono font-bold text-[#0867B2] bg-[#EBF4FC] px-2.5 py-1 rounded-lg">
+        <span className="text-xs font-mono font-bold text-[#A0C4E2] bg-white/10 border border-white/15 px-2.5 py-1 rounded-lg">
           {rows.length} HOLD ALLOCATIONS
         </span>
       </div>
@@ -59,7 +58,7 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs">
           <thead>
-            <tr className="bg-[#F8FAFC] border-b border-[#CBD5E1] text-[#475569] uppercase font-bold text-[10px] tracking-wider">
+            <tr className="bg-white/5 border-b border-white/15 text-[#A0C4E2] uppercase font-bold text-[10px] tracking-wider">
               <th className="py-2.5 px-3">Batch ID</th>
               <th className="py-2.5 px-3">Hold</th>
               <th className="py-2.5 px-3">Cargo Type</th>
@@ -71,7 +70,7 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
               <th className="py-2.5 px-3 text-center">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-[#E2E8F0]">
+          <tbody className="divide-y divide-white/10">
             {rows.map((r, idx) => {
               const isSelected = selectedHoldNumber === r.holdNumber;
               return (
@@ -80,22 +79,22 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
                   onClick={() => onSelectHoldNumber(r.holdNumber)}
                   className={`transition-colors cursor-pointer ${
                     isSelected
-                      ? 'bg-[#FFF8F0] font-semibold text-[#063B68]'
-                      : 'hover:bg-[#F8FAFC] text-[#1E293B]'
+                      ? 'bg-white/15 font-semibold text-white'
+                      : 'hover:bg-white/5 text-[#E2E8F0]'
                   }`}
                 >
                   <td className="py-3 px-3">
                     <div className="flex items-center gap-1.5">
-                      <Tag className="w-3 h-3 text-[#0867B2]" />
-                      <span className="font-mono font-bold text-[#0867B2]">{r.batch}</span>
+                      <Tag className="w-3 h-3 text-[#38BDF8]" />
+                      <span className="font-mono font-bold text-[#38BDF8]">{r.batch}</span>
                     </div>
                   </td>
                   <td className="py-3 px-3">
                     <span
-                      className={`inline-block px-2 py-0.5 rounded text-[11px] font-bold ${
+                      className={`inline-block px-2.5 py-0.5 rounded-lg text-[11px] font-bold border ${
                         isSelected
-                          ? 'bg-[#FF7A00] text-white shadow-xs'
-                          : 'bg-[#063B68] text-white'
+                          ? 'bg-[#FF7A00] text-white border-white shadow-md'
+                          : 'bg-white/10 text-white border-white/20'
                       }`}
                     >
                       {r.holdCode}
@@ -103,20 +102,20 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
                   </td>
                   <td className="py-3 px-3">
                     <div>
-                      <span className="font-semibold">{r.cargo}</span>
-                      <span className="block text-[10px] text-[#64748B]">{r.supplier}</span>
+                      <span className="font-semibold text-white">{r.cargo}</span>
+                      <span className="block text-[10px] text-[#A0C4E2]">{r.supplier}</span>
                     </div>
                   </td>
-                  <td className="py-3 px-3 text-right font-mono">
+                  <td className="py-3 px-3 text-right font-mono text-white">
                     {r.allocated?.toLocaleString()}
                   </td>
-                  <td className="py-3 px-3 text-right font-mono text-[#00843D] font-bold">
+                  <td className="py-3 px-3 text-right font-mono text-[#34D399] font-bold">
                     {r.loaded?.toLocaleString()}
                   </td>
-                  <td className="py-3 px-3 text-right font-mono text-[#64748B]">
+                  <td className="py-3 px-3 text-right font-mono text-[#A0C4E2]">
                     {r.discharged?.toLocaleString()}
                   </td>
-                  <td className="py-3 px-3 text-right font-mono text-[#063B68] font-bold">
+                  <td className="py-3 px-3 text-right font-mono text-[#38BDF8] font-bold">
                     {r.onboard?.toLocaleString()}
                   </td>
                   <td className="py-3 px-3 text-center">
@@ -128,7 +127,7 @@ export const CargoManifest: React.FC<CargoManifestProps> = ({
                         e.stopPropagation();
                         onSelectHoldNumber(r.holdNumber);
                       }}
-                      className="px-2 py-1 bg-[#F1F5F9] hover:bg-[#0867B2] hover:text-white rounded text-[10px] font-bold transition-colors inline-flex items-center gap-1 cursor-pointer"
+                      className="px-2.5 py-1 bg-white/10 hover:bg-[#0867B2] text-[#FFFFFF] rounded-lg text-[10px] font-bold transition-all inline-flex items-center gap-1 cursor-pointer border border-white/15"
                     >
                       <span>Focus 3D</span>
                       <ArrowRight className="w-3 h-3" />

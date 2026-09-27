@@ -7,8 +7,6 @@ import {
   DoorClosed,
   DoorOpen,
   Scale,
-  Cpu,
-  Info,
   Radio
 } from 'lucide-react';
 
@@ -26,8 +24,6 @@ export const SensorPanel: React.FC<SensorPanelProps> = ({ sensors }) => {
       status: sensors.temperature_c > 35 ? 'HIGH' : 'NORMAL',
       icon: Thermometer,
       color: 'text-[#FF7A00]',
-      bg: 'bg-[#FFF4E5]',
-      border: 'border-[#FFE0B2]',
       desc: 'Ambient hold thermal probe'
     },
     {
@@ -35,9 +31,7 @@ export const SensorPanel: React.FC<SensorPanelProps> = ({ sensors }) => {
       value: `${sensors.humidity_pct}%`,
       status: sensors.humidity_pct > 70 ? 'ALERT' : 'OPTIMAL',
       icon: Droplets,
-      color: sensors.humidity_pct > 70 ? 'text-[#D92D20]' : 'text-[#0867B2]',
-      bg: sensors.humidity_pct > 70 ? 'bg-[#FEECEB]' : 'bg-[#EBF4FC]',
-      border: sensors.humidity_pct > 70 ? 'border-[#FCCECE]' : 'border-[#CFE2F9]',
+      color: sensors.humidity_pct > 70 ? 'text-red-400' : 'text-[#38BDF8]',
       desc: sensors.humidity_pct > 70 ? 'Moisture threshold exceeded' : 'Relative in-hold moisture'
     },
     {
@@ -45,9 +39,7 @@ export const SensorPanel: React.FC<SensorPanelProps> = ({ sensors }) => {
       value: sensors.vibration,
       status: 'NORMAL',
       icon: Activity,
-      color: 'text-[#00843D]',
-      bg: 'bg-[#E6F4EA]',
-      border: 'border-[#C4E7D0]',
+      color: 'text-[#34D399]',
       desc: 'Hull acoustic & resonance'
     },
     {
@@ -55,9 +47,7 @@ export const SensorPanel: React.FC<SensorPanelProps> = ({ sensors }) => {
       value: sensors.hatch_status,
       status: isHatchOpen ? 'WARNING' : 'SECURE',
       icon: isHatchOpen ? DoorOpen : DoorClosed,
-      color: isHatchOpen ? 'text-[#FF7A00]' : 'text-[#063B68]',
-      bg: isHatchOpen ? 'bg-[#FFF4E5]' : 'bg-[#F1F5F9]',
-      border: isHatchOpen ? 'border-[#FFE0B2]' : 'border-[#CBD5E1]',
+      color: isHatchOpen ? 'text-[#FF7A00]' : 'text-[#38BDF8]',
       desc: isHatchOpen ? 'Hatch covers retracted' : 'Sealed weather-tight'
     },
     {
@@ -65,67 +55,65 @@ export const SensorPanel: React.FC<SensorPanelProps> = ({ sensors }) => {
       value: `${sensors.weight_mt?.toLocaleString()} MT`,
       status: 'VERIFIED',
       icon: Scale,
-      color: 'text-[#063B68]',
-      bg: 'bg-[#F8FAFC]',
-      border: 'border-[#CBD5E1]',
+      color: 'text-[#38BDF8]',
       desc: 'Draught survey & load cells'
     }
   ];
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Notice Banner */}
-      <div className="p-3 bg-[#EBF4FC] border border-[#CFE2F9] rounded-xl flex items-center justify-between text-xs text-[#063B68]">
+      <div className="p-3 bg-[#063B68]/40 backdrop-blur-md border border-white/20 rounded-xl flex items-center justify-between text-xs text-white shadow-xl">
         <div className="flex items-center gap-2">
-          <Radio className="w-4 h-4 text-[#0867B2] animate-pulse" />
-          <span className="font-extrabold uppercase tracking-wider text-[11px]">
+          <Radio className="w-4 h-4 text-[#38BDF8] animate-pulse" />
+          <span className="font-extrabold uppercase tracking-wider text-[11px] text-[#FFFFFF]">
             {sensors.data_badge || 'SIMULATED SENSOR DATA'}
           </span>
-          <span className="text-[#64748B] hidden sm:inline">
-            — Telemetry readings generated via simulated IoT gateway for demonstration purposes.
+          <span className="text-[#A0C4E2] hidden sm:inline">
+            — Telemetry generated via simulated IoT gateway
           </span>
         </div>
-        <span className="text-[10px] font-mono bg-white px-2 py-0.5 rounded border border-[#CBD5E1] text-[#475569]">
+        <span className="text-[10px] font-mono bg-white/10 px-2 py-0.5 rounded border border-white/15 text-[#A0C4E2]">
           {sensors.active_devices_count || 5} Devices Active
         </span>
       </div>
 
       {/* Sensor Cards Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
         {sensorCards.map((item, idx) => {
           const Icon = item.icon;
           return (
             <div
               key={idx}
-              className={`istelx-card p-4 border ${item.border} bg-white flex flex-col justify-between`}
+              className="bg-[#063B68]/40 backdrop-blur-md border border-white/20 shadow-xl rounded-xl p-3 sm:p-4 flex flex-col justify-between text-white hover:bg-[#063B68]/55 transition-all"
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#64748B]">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#A0C4E2]">
                   {item.title}
                 </span>
-                <div className={`p-1.5 rounded-lg ${item.bg} ${item.color}`}>
+                <div className={`p-1.5 rounded-lg bg-white/10 border border-white/15 ${item.color}`}>
                   <Icon className="w-4 h-4" />
                 </div>
               </div>
 
               <div>
-                <div className="text-lg font-heading font-black text-[#102A43]">
+                <div className="text-base sm:text-lg font-heading font-black text-[#FFFFFF]">
                   {item.value}
                 </div>
-                <div className="text-[10px] text-[#64748B] mt-0.5 truncate">
+                <div className="text-[10px] text-[#A0C4E2] mt-0.5 truncate">
                   {item.desc}
                 </div>
               </div>
 
-              <div className="pt-2 mt-2 border-t border-[#F1F5F9] flex items-center justify-between">
-                <span className="text-[9px] uppercase font-bold text-[#94A3B8]">Status:</span>
+              <div className="pt-2 mt-2 border-t border-white/10 flex items-center justify-between">
+                <span className="text-[9px] uppercase font-bold text-[#A0C4E2]">Status:</span>
                 <span
-                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded ${
+                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded border ${
                     item.status === 'ALERT'
-                      ? 'bg-[#FEECEB] text-[#D92D20]'
+                      ? 'bg-red-500/25 text-red-300 border-red-400/40 animate-pulse'
                       : item.status === 'WARNING'
-                      ? 'bg-[#FFF4E5] text-[#D96500]'
-                      : 'bg-[#E6F4EA] text-[#00843D]'
+                      ? 'bg-amber-500/25 text-amber-300 border-amber-400/40'
+                      : 'bg-emerald-500/25 text-emerald-300 border-emerald-400/40'
                   }`}
                 >
                   {item.status}
