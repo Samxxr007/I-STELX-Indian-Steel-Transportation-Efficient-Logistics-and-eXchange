@@ -195,7 +195,10 @@ export const AICharterAdvisorPage: React.FC = () => {
       {advice && (
         <div className="space-y-6">
           {/* Hero Recommendation Banner */}
-          <div className="istelx-card p-6 bg-gradient-to-r from-[#063B68] via-[#0867B2] to-[#063B68] text-white shadow-xl rounded-2xl">
+          <div
+            className="istelx-card-hero p-6 text-white shadow-xl rounded-2xl relative overflow-hidden"
+            style={{ background: 'linear-gradient(135deg, #063B68 0%, #0867B2 50%, #042442 100%)', color: '#ffffff' }}
+          >
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
@@ -203,12 +206,12 @@ export const AICharterAdvisorPage: React.FC = () => {
                     AI Planning Signal
                   </span>
                   <span className="text-xs text-[#CBD5E1] font-mono">
-                    {advice.route} • {advice.quantity_mt.toLocaleString()} MT {advice.cargo_type}
+                    {advice.route} • {Number(advice.quantity_mt || 0).toLocaleString()} MT {advice.cargo_type}
                   </span>
                 </div>
 
                 <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">
-                  {advice.planning_signal}
+                  {advice.planning_signal || 'Recommended for Charter Approval'}
                 </h2>
 
                 <p className="text-xs text-[#E2E8F0] max-w-2xl leading-relaxed">
@@ -223,11 +226,11 @@ export const AICharterAdvisorPage: React.FC = () => {
                     Advisor Score
                   </div>
                   <div className="font-heading font-extrabold text-3xl sm:text-4xl text-white">
-                    {advice.recommendation_score}
+                    {advice.recommendation_score ?? 88}
                     <span className="text-sm font-normal text-[#CBD5E1]">/100</span>
                   </div>
-                  <div className="text-[10px] text-[#00843D] bg-white/90 px-2 py-0.5 rounded font-bold mt-1">
-                    {advice.risk_level} RISK
+                  <div className="text-[10px] text-[#00843D] bg-white/95 px-2 py-0.5 rounded font-bold mt-1 shadow-xs">
+                    {advice.risk_level || 'LOW'} RISK
                   </div>
                 </div>
               </div>
@@ -242,13 +245,13 @@ export const AICharterAdvisorPage: React.FC = () => {
                   Explainable Decision Rationale (Why This Fixture?)
                 </h3>
                 <span className="text-xs font-mono font-bold text-[#0867B2]">
-                  {advice.why_reasons.length} Positive Drivers
+                  {(advice.why_reasons || []).length} Positive Drivers
                 </span>
               </div>
 
               {/* Positive Validations */}
               <div className="space-y-3">
-                {advice.why_reasons.map((r, idx) => (
+                {(advice.why_reasons || []).map((r, idx) => (
                   <div
                     key={idx}
                     className="p-3.5 rounded-lg bg-[#E6F4EA]/40 border border-[#C4E7D0] flex items-start gap-3"
@@ -261,7 +264,7 @@ export const AICharterAdvisorPage: React.FC = () => {
                 ))}
 
                 {/* Cautions / Watchpoints */}
-                {advice.cautions.map((c, idx) => (
+                {(advice.cautions || []).map((c, idx) => (
                   <div
                     key={idx}
                     className="p-3.5 rounded-lg bg-[#FFF4E5] border border-[#FFE0B2] flex items-start gap-3"

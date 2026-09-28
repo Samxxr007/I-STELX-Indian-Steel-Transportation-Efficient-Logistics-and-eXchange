@@ -80,12 +80,18 @@
 
 /* Maritime Enterprise Cards & Surfaces */
 .istelx-card {
-  background: #FFFFFF;
+  background-color: #FFFFFF;
   border: 1px solid rgba(203, 213, 225, 0.7);
   border-radius: 12px;
   box-shadow: 0 1px 3px 0 rgba(6, 59, 104, 0.04), 0 1px 2px -1px rgba(6, 59, 104, 0.03);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
+}
+
+.istelx-card-hero {
+  background: linear-gradient(135deg, #063B68 0%, #0867B2 50%, #042442 100%) !important;
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 .istelx-card-hover:hover {

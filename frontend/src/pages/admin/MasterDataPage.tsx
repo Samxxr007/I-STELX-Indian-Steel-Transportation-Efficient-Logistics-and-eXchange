@@ -37,7 +37,10 @@ export const MasterDataPage: React.FC = () => {
 
       {/* System Health Top Card */}
       {health && (
-        <div className="istelx-card p-5 bg-gradient-to-r from-[#063B68] to-[#0867B2] text-white rounded-xl grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        <div
+          className="istelx-card-hero p-5 text-white rounded-xl grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs shadow-md border border-white/10"
+          style={{ background: 'linear-gradient(135deg, #063B68 0%, #0867B2 100%)', color: '#ffffff' }}
+        >
           <div>
             <span className="text-[10px] text-[#CBD5E1] uppercase font-bold">API Gateway Status</span>
             <div className="font-heading font-bold text-base mt-1 text-white">{health.api_gateway}</div>
