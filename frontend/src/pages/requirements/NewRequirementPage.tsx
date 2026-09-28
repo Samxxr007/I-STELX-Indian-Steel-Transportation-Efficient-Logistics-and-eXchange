@@ -164,12 +164,14 @@ export const NewRequirementPage: React.FC = () => {
                   onChange={(e) => setForm({ ...form, origin_country: e.target.value })}
                   className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg text-xs text-[#102A43] focus:border-[#0867B2] focus:bg-white transition-colors"
                 >
-                  <option value="Australia">Australia</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Oman">Oman</option>
-                  <option value="Indonesia">Indonesia</option>
-                  <option value="Brazil">Brazil</option>
-                  <option value="India (Coastal)">India (Domestic Coastal)</option>
+                  <option value="Australia">Australia (Coking Coal / Iron Ore)</option>
+                  <option value="United States">United States (High-Vol Coking Coal)</option>
+                  <option value="Mozambique">Mozambique (Met Coal / Thermal)</option>
+                  <option value="Russia">Russia (PCI Coal & Anthracite)</option>
+                  <option value="Indonesia">Indonesia (Thermal & Semi-Soft Coal)</option>
+                  <option value="South Africa">South Africa (Richards Bay Coal)</option>
+                  <option value="Oman">Oman (Limestone & Dolomite)</option>
+                  <option value="India (Coastal)">India (Domestic Coastal Movement)</option>
                 </select>
               </div>
 
@@ -182,32 +184,37 @@ export const NewRequirementPage: React.FC = () => {
                   onChange={(e) => setForm({ ...form, origin_port: e.target.value })}
                   className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg text-xs font-semibold text-[#063B68] focus:border-[#0867B2] focus:bg-white transition-colors"
                 >
-                  <option value="Hay Point">Hay Point (Australia)</option>
-                  <option value="Newcastle">Newcastle (Australia)</option>
-                  <option value="Gladstone">Gladstone (Australia)</option>
-                  <option value="Port Hedland">Port Hedland (Australia)</option>
-                  <option value="Richards Bay">Richards Bay (South Africa)</option>
-                  <option value="Salalah">Salalah (Oman)</option>
+                  <option value="Hay Point">Hay Point (Australia - Coking Coal)</option>
+                  <option value="Newcastle">Newcastle (Australia - Thermal/Met Coal)</option>
+                  <option value="Gladstone">Gladstone (Australia - Dry Bulk)</option>
+                  <option value="Port Hedland">Port Hedland (Australia - Iron Ore)</option>
+                  <option value="Hampton Roads">Hampton Roads / Norfolk (US - Met Coal)</option>
+                  <option value="Maputo">Maputo / Beira (Mozambique - Coal)</option>
+                  <option value="Ust-Luga">Ust-Luga / Vostochny (Russia - PCI Coal)</option>
+                  <option value="Samarinda">Samarinda / Taboneo (Indonesia - Coal)</option>
+                  <option value="Richards Bay">Richards Bay (South Africa - Coal)</option>
+                  <option value="Salalah">Salalah (Oman - Limestone)</option>
                   <option value="Mormugao">Mormugao (Goa, India)</option>
                 </select>
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-wider text-[#475569] mb-1.5">
-                  Destination Indian Port *
+                  Destination Indian East Coast Port *
                 </label>
                 <select
                   value={form.destination_port}
                   onChange={(e) => setForm({ ...form, destination_port: e.target.value })}
                   className="w-full px-3 py-2 bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg text-xs font-semibold text-[#063B68] focus:border-[#0867B2] focus:bg-white transition-colors"
                 >
-                  <option value="Visakhapatnam">Visakhapatnam (INVTZ)</option>
-                  <option value="Paradip">Paradip (INPRT)</option>
-                  <option value="Haldia">Haldia (INHAL - River Draft)</option>
-                  <option value="Dhamra">Dhamra (INDHR - Capesize)</option>
-                  <option value="Gangavaram">Gangavaram (INGGV - Deepwater)</option>
-                  <option value="Chennai">Chennai (INMAA)</option>
-                  <option value="Mormugao">Mormugao (INMRM)</option>
+                  <option value="Visakhapatnam">Visakhapatnam (INVTZ - Outer Harbor 14.5m)</option>
+                  <option value="Gangavaram">Gangavaram (INGGV - Deepwater Capesize 19.5m)</option>
+                  <option value="Paradip">Paradip (INPRT - Mechanized Coal Berth 14.5m)</option>
+                  <option value="Dhamra">Dhamra (INDHR - All-Weather Capesize 18.0m)</option>
+                  <option value="Gopalpur">Gopalpur (INGPL - Panamax/Supramax 13.5m)</option>
+                  <option value="Haldia">Haldia (INHLD - River Draft Constrained 8.5m)</option>
+                  <option value="Sagar-Sandheads">Sagar - Sandheads (INSND - Midstream Lighterage Anchorage)</option>
+                  <option value="Chennai">Chennai (INMAA - Bulk Terminal)</option>
                 </select>
               </div>
             </div>
