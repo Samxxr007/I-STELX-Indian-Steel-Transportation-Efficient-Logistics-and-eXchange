@@ -133,10 +133,10 @@ export const VesselMap: React.FC<VesselMapProps> = ({
       >
         <MapAutoPan center={center} zoom={zoom} />
 
-        {/* Crisp OpenStreetMap / CartoDB Voyager Style Tile */}
+        {/* Crisp OpenStreetMap / CARTO Voyager Style Tile with Authorized API Key */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          url={`https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png?key=${import.meta.env.VITE_CARTO_API_KEY || 'cb1_421o_1_818db85b781f5985b191aea8'}`}
         />
 
         {/* Port Markers & Geofences */}
