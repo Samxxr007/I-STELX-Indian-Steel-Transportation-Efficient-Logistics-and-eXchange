@@ -1,6 +1,7 @@
 import { DigitalTwinData, DigitalTwinHold, DigitalTwinBatch, DigitalTwinSensors, DigitalTwinEvent } from '../types/digitalTwin';
 
-const API_BASE = '/api/v1';
+const API_HOST = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
+const API_BASE = `${API_HOST}/api/v1`;
 
 const getHeaders = () => {
   const token = localStorage.getItem('istelx_token');
@@ -109,9 +110,20 @@ export const digitalTwinService = {
 
   // WebSocket connection for real-time telemetry/cargo updates
   connectCargoWebSocket(shipmentIdentifier: string | number, onMessage: (data: any) => void): () => void {
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.host;
-    const wsUrl = `${protocol}//${host}/ws/shipments/${shipmentIdentifier}/cargo`;
+    let wsUrl: string;
+    const envWs = import.meta.env.VITE_WS_URL;
+    if (envWs) {
+      wsUrl = `${envWs.replace(/\/+$/, '')}/ws/shipments/${shipmentIdentifier}/cargo`;
+    } else if (import.meta.env.VITE_API_URL) {
+      const apiUrl = import.meta.env.VITE_API_URL.replace(/\/+$/, '');
+      const wsProtocol = apiUrl.startsWith('https:') ? 'wss:' : 'ws:';
+      const wsHost = apiUrl.replace(/^https?:\/\//, '');
+      wsUrl = `${wsProtocol}//${wsHost}/ws/shipments/${shipmentIdentifier}/cargo`;
+    } else {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const host = window.location.host;
+      wsUrl = `${protocol}//${host}/ws/shipments/${shipmentIdentifier}/cargo`;
+    }
 
     let ws: WebSocket | null = null;
     let isClosedExplicitly = false;
